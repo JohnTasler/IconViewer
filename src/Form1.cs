@@ -1,12 +1,9 @@
-using System;
 using System.ComponentModel;
-using System.Drawing;
+using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using IconViewer.Properties;
+using Tasler.Interop.Kernel.Resources;
 
 namespace IconViewer;
 
@@ -22,7 +19,8 @@ public partial class Form1 : Form
 
 		foreach (var file in Settings.Default.PreviousFiles)
 		{
-			_filePathComboBox.Items.Add(file);
+			if (file is not null)
+				_filePathComboBox.Items.Add(file);
 		}
 	}
 
@@ -47,39 +45,59 @@ public partial class Form1 : Form
 			var exePath = _filePathComboBox.Text;
 			var items = new BindingList<ImageItem>();
 
-			Interop.SHFILEINFOW sfi = new Interop.SHFILEINFOW();
-			var a = Interop.SHGetFileInfo(exePath, 0, ref sfi, (uint)Marshal.SizeOf(sfi), Interop.SHGFI.SysIconIndex);
-
-			if (!Settings.Default.PreviousFiles.Contains(exePath))
+			if (Path.GetExtension(exePath).Equals(".ico", StringComparison.OrdinalIgnoreCase))
 			{
-				_filePathComboBox.Items.Add(exePath);
-				Settings.Default.PreviousFiles.Add(exePath);
-				Settings.Default.Save();
-			}
-
-			ImageItem selectedImageItem = null;
-			foreach (var imageListIndex in new[] { Interop.SHIL.Small, Interop.SHIL.SysSmall, Interop.SHIL.Large, Interop.SHIL.ExtraLarge, Interop.SHIL.Jumbo })
-			{
-				var imageList = Interop.SHGetImageList((Interop.SHIL)imageListIndex);
-				if (imageList is not null)
+				using (var fileStream = new FileStream(exePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var hIcon = imageList.GetIcon(sfi.iIcon, 1);
-					var item = new ImageItem(hIcon, imageListIndex);
-					items.Add(item);
-
-					if (item.DisplayText == _previousIconPath)
-						selectedImageItem = item;
+					foreach (var iconDirectoryItem in IconFileExtensions.GetIconDirectoryEntries(fileStream))
+					{
+						Debug.WriteLine($"{iconDirectoryItem.BitmapInfoHeader}\n");
+					}
 				}
-			}
 
-			_imagesListBox.DataSource = items;
-			_imagesListBox.SelectedItem = selectedImageItem ?? items.FirstOrDefault();
-			_imagesListBox.Focus();
+				AddPathToComboBox(exePath);
+			}
+			else
+			{
+				Interop.SHFILEINFOW sfi = new Interop.SHFILEINFOW();
+				var a = Interop.SHGetFileInfo(exePath, 0, ref sfi, (uint)Marshal.SizeOf(sfi), Interop.SHGFI.SysIconIndex);
+
+				AddPathToComboBox(exePath);
+
+				ImageItem? selectedImageItem = null;
+				foreach (var imageListIndex in new[] { Interop.SHIL.Small, Interop.SHIL.SysSmall, Interop.SHIL.Large, Interop.SHIL.ExtraLarge, Interop.SHIL.Jumbo })
+				{
+					var imageList = Interop.SHGetImageList((Interop.SHIL)imageListIndex);
+					if (imageList is not null)
+					{
+						var hIcon = imageList.GetIcon(sfi.iIcon, 1);
+						var item = new ImageItem(hIcon, imageListIndex);
+						items.Add(item);
+
+						if (item.DisplayText == _previousIconPath)
+							selectedImageItem = item;
+					}
+				}
+
+				_imagesListBox.DataSource = items;
+				_imagesListBox.SelectedItem = selectedImageItem ?? items.FirstOrDefault();
+				_imagesListBox.Focus();
+			}
 		}
 		catch (Exception ex)
 		{
 			MessageBox.Show(ex.Message);
 			return;
+		}
+
+		void AddPathToComboBox(string filePath)
+		{
+			if (!Settings.Default.PreviousFiles.Contains(filePath))
+			{
+				_filePathComboBox.Items.Add(filePath);
+				Settings.Default.PreviousFiles.Add(filePath);
+				Settings.Default.Save();
+			}
 		}
 	}
 
@@ -95,7 +113,7 @@ public partial class Form1 : Form
 
 	private void ImagesListBox_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		var selectedItem = (ImageItem)_imagesListBox.SelectedItem;
+		var selectedItem = (ImageItem)_imagesListBox.SelectedItem!;
 		if (selectedItem is not null)
 		{
 			_previousIconPath = selectedItem.DisplayText;
@@ -106,7 +124,7 @@ public partial class Form1 : Form
 				= _imagesListBox.Enabled
 				= _imagesListBox.Enabled
 				= _showBorderCheckBox.Enabled
-				=  _iconPictureBox.Image is not null;
+				= _iconPictureBox.Image is not null;
 			this.CenterIconPictureFrame();
 
 			Settings.Default.PreviouslySelectedListItemName = _previousIconPath;

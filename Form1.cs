@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using ExtractAssociatedIcon.Properties;
+using IconViewer.Properties;
 
-namespace ExtractAssociatedIcon;
+namespace IconViewer;
 
 public partial class Form1 : Form
 {

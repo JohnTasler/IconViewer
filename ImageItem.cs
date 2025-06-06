@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 
-namespace ExtractAssociatedIcon;
+namespace IconViewer;
 
 public class ImageItem : IDisposable
 {

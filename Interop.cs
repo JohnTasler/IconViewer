@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ExtractAssociatedIcon;
+namespace IconViewer;
 
 public static class Interop
 {

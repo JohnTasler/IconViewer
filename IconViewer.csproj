@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ProjectGuid>{68483460-32A4-48D6-945C-C707F3582210}</ProjectGuid>
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>IconViewer</RootNamespace>
+		<AssemblyName>IconViewer</AssemblyName>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Deterministic>true</Deterministic>
+		<Platforms>AnyCPU;x64;x86;ARM64</Platforms>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AssemblyTitle>IconViewer</AssemblyTitle>
+		<Description>A user interface to enumerate and display the icon images from an associated file or executable.</Description>
+		<Company>Tasler</Company>
+		<Product>Icon Viewer</Product>
+		<Copyright>Copyright © 2024 John Tasler.</Copyright>
+		<FileVersion>1.0.0.0</FileVersion>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<InformationalVersion>1.0.0.0</InformationalVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <EditorConfigFile Remove=".editorconfig" />
+	  <None Remove=".editorconfig" />
+		<None Remove=".gitignore" />
+		<None Remove=".gitattributes" />
+		<None Remove="Directory.Build.props" />
+		<None Remove="IconViewer.slnx" />
+		<None Remove="LICENSE" />
+		<None Remove="README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+		</Compile>
+	</ItemGroup>
+</Project>

@@ -1,4 +1,5 @@
-namespace ExtractAssociatedIcon;
+
+namespace IconViewer;
 
 partial class Form1
 {

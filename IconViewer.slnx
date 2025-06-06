@@ -51,7 +51,7 @@
     <Project Path="../tasler-dotnet/Source/Tasler.AssemblyInfo/Tasler.AssemblyInfo.csproj" />
     <Project Path="../tasler-dotnet/Source/Tasler.TextTemplates/Tasler.TextTemplates.Shared.shproj" />
   </Folder>
-  <Project Path="IconViewer.csproj">
+  <Project Path="src/IconViewer.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />

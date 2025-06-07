@@ -14,6 +14,8 @@ partial class Form1
 	/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 	protected override void Dispose(bool disposing)
 	{
+		this.ClearImageListBox();
+
 		if (disposing && (components != null))
 		{
 			components.Dispose();
@@ -159,7 +161,6 @@ partial class Form1
 		// 
 		// _borderPanel
 		// 
-		_borderPanel.Anchor = AnchorStyles.None;
 		_borderPanel.BackColor = SystemColors.ControlText;
 		_borderPanel.Controls.Add(_iconPictureBox);
 		_borderPanel.Location = new Point(0, 0);

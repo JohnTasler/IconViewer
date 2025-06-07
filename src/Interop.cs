@@ -1,5 +1,5 @@
-using System;
 using System.Runtime.InteropServices;
+using Tasler.Interop.Gdi;
 
 namespace IconViewer;
 
@@ -11,7 +11,7 @@ public static class Interop
 	[DllImport("shell32.dll")]
 	private static extern int SHGetImageList(SHIL iImageList, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object imageList);
 
-	public static IImageList SHGetImageList(SHIL iImageList)
+	public static IImageList? SHGetImageList(SHIL iImageList)
 	{
 		var iid = typeof(IImageList).GUID;
 		object imageList;
@@ -28,7 +28,7 @@ public static class Interop
 	{
 		int Add(IntPtr hbmImage, IntPtr hbmMask);
 
-		int ReplaceIcon(int i, SafeIconHandle hIcon);
+		int ReplaceIcon(int i, SafeGdiIcon hIcon);
 
 		void SetOverlayImage(int iImage, int iOverlay);
 
@@ -40,7 +40,7 @@ public static class Interop
 
 		void Remove(int i);
 
-		SafeIconHandle GetIcon(int i, uint flags);
+		SafeGdiIconOwned GetIcon(int i, uint flags);
 
 		IMAGEINFO GetImageInfo(int i);
 

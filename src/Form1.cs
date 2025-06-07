@@ -1,9 +1,8 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using IconViewer.Properties;
-using Tasler.Interop.Kernel.Resources;
+using Tasler.Interop.Resources;
 
 namespace IconViewer;
 
@@ -34,10 +33,7 @@ public partial class Form1 : Form
 		// Clear current contents
 		if (_imagesListBox.DataSource is not null)
 		{
-			foreach (var imageItem in (BindingList<ImageItem>)_imagesListBox.DataSource)
-			{
-				imageItem.Dispose();
-			}
+			this.ClearImageListBox();
 		}
 
 		try
@@ -49,13 +45,17 @@ public partial class Form1 : Form
 			{
 				using (var fileStream = new FileStream(exePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					foreach (var iconDirectoryItem in IconFileExtensions.GetIconDirectoryEntries(fileStream))
+					foreach (var iconDirectoryItem in IconFileReader.GetIconDirectoryEntries(fileStream))
 					{
-						Debug.WriteLine($"{iconDirectoryItem.BitmapInfoHeader}\n");
+						var imageItem = new ImageItem(iconDirectoryItem);
+						items.Add(imageItem);
 					}
 				}
 
 				AddPathToComboBox(exePath);
+
+				_imagesListBox.DataSource = items;
+				_imagesListBox.Focus();
 			}
 			else
 			{
@@ -101,19 +101,32 @@ public partial class Form1 : Form
 		}
 	}
 
+	private void ClearImageListBox()
+	{
+		if (_imagesListBox.DataSource is IList<ImageItem> imageItems)
+		{
+			foreach (var imageItem in imageItems)
+				imageItem.Dispose();
+
+			imageItems.Clear();
+			_imagesListBox.DataSource = null;
+		}
+	}
+
 	private void CenterIconPictureFrame()
 	{
 		if (_iconPictureBox.Image is not null)
 		{
 			int centerX = _imagePanel.Width / 2 - (_iconPictureBox.Image.Width + 2) / 2;
 			int centerY = _imagePanel.Height / 2 - (_iconPictureBox.Image.Height + 2) / 2;
-			_borderPanel.SetBounds(centerX, centerY, _iconPictureBox.Image.Width, _iconPictureBox.Image.Height);
+			_borderPanel.SetBounds(centerX, centerY, _iconPictureBox.Image.Width + 2, _iconPictureBox.Image.Height + 2);
+			_iconPictureBox.SetBounds(1, 1, _iconPictureBox.Image.Width, _iconPictureBox.Image.Height);
 		}
 	}
 
 	private void ImagesListBox_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		var selectedItem = (ImageItem)_imagesListBox.SelectedItem!;
+		var selectedItem = (ImageItem?)_imagesListBox.SelectedItem;
 		if (selectedItem is not null)
 		{
 			_previousIconPath = selectedItem.DisplayText;
@@ -121,7 +134,6 @@ public partial class Form1 : Form
 			this.ShowBorderCheckBox_CheckedChanged(_showBorderCheckBox, EventArgs.Empty);
 			_borderPanel.Visible = true;
 			_saveAsButton.Enabled
-				= _imagesListBox.Enabled
 				= _imagesListBox.Enabled
 				= _showBorderCheckBox.Enabled
 				= _iconPictureBox.Image is not null;
@@ -137,7 +149,6 @@ public partial class Form1 : Form
 			_iconPictureBox.Width = _iconPictureBox.Height = 0;
 			_saveAsButton.Enabled
 				= _imagesListBox.Enabled
-				= _imagesListBox.Enabled
 				= _showBorderCheckBox.Enabled
 				= false;
 		}
@@ -145,13 +156,11 @@ public partial class Form1 : Form
 
 	private void SaveAsButton_Click(object sender, EventArgs e)
 	{
-		var selectedItem = (ImageItem)_imagesListBox.SelectedItem;
+		var selectedItem = (ImageItem?)_imagesListBox.SelectedItem;
 		if (selectedItem is null)
-		{
 			return;
-		}
 
-		var fileName = $"{Path.GetFileNameWithoutExtension(_filePathComboBox.Text)}_{selectedItem.ImageIndex}.png";
+		var fileName = $"{Path.GetFileNameWithoutExtension(_filePathComboBox.Text)}_{selectedItem.Width}x{selectedItem.Height}.png";
 
 		var saveFileDialog = new SaveFileDialog
 		{

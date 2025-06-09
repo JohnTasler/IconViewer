@@ -13,9 +13,11 @@ public class ImageItem : IDisposable
 		Guard.IsNotNull(iconHandle);
 		Guard.IsNotDefault(iconHandle.Handle);
 
-		_iconHandle = takeOwnership ? iconHandle : new();
+		_iconHandle = takeOwnership
+			?	new SafeGdiIconOwned() { Handle = iconHandle.DetachHandle() }
+			: new SafeGdiIcon() { Handle = iconHandle.Handle };
 
-		_icon = Icon.FromHandle(iconHandle.DangerousGetHandle());
+		_icon = Icon.FromHandle(_iconHandle.DangerousGetHandle());
 	}
 
 	public ImageItem(SafeGdiIcon iconHandle, Interop.SHIL imageListIndex)
@@ -25,7 +27,7 @@ public class ImageItem : IDisposable
 	}
 
 	public ImageItem(IconDirectoryItem directoryItem)
-		: this(directoryItem.Icon, true)
+		: this(directoryItem.CreateIcon(), true)
 	{
 		this.DisplayText = directoryItem.ResDirEntry.ToString();
 	}

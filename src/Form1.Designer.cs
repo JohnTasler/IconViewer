@@ -198,7 +198,7 @@ partial class Form1
 		this.MinimumSize = new Size(540, 402);
 		this.Name = "Form1";
 		this.StartPosition = FormStartPosition.CenterScreen;
-		this.Text = "Extract Associated Icon";
+		this.Text = "Icon Viewer";
 		_filePanel.ResumeLayout(false);
 		_filePanel.PerformLayout();
 		((System.ComponentModel.ISupportInitialize)_iconPictureBox).EndInit();

@@ -68,7 +68,7 @@
 			<Platform Solution="*|x86" Project="x86" />
 		</Project>
 	</Folder>
-	<Project Path="src/IconViewer.csproj">
+	<Project Path="src.WinForms/IconViewer.csproj">
 		<Platform Solution="*|ARM64" Project="ARM64" />
 		<Platform Solution="*|x64" Project="x64" />
 		<Platform Solution="*|x86" Project="x86" />

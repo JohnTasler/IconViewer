@@ -35,6 +35,7 @@ partial class Form1
 		_fileNameLabel = new Label();
 		_browseButton = new Button();
 		_filePathComboBox = new ComboBox();
+		_filePathTextBox = new TextBox();
 		_extractButton = new Button();
 		_iconPictureBox = new PictureBox();
 		_imagesListBox = new ListBox();
@@ -54,6 +55,7 @@ partial class Form1
 		_filePanel.Controls.Add(_fileNameLabel);
 		_filePanel.Controls.Add(_browseButton);
 		_filePanel.Controls.Add(_filePathComboBox);
+		_filePanel.Controls.Add(_filePathTextBox);
 		_filePanel.Controls.Add(_extractButton);
 		_filePanel.Dock = DockStyle.Top;
 		_filePanel.Location = new Point(0, 0);
@@ -87,7 +89,7 @@ partial class Form1
 		// _filePathComboBox
 		// 
 		_filePathComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-		_filePathComboBox.AutoCompleteMode = AutoCompleteMode.Suggest;
+		_filePathComboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
 		_filePathComboBox.AutoCompleteSource = AutoCompleteSource.FileSystem;
 		_filePathComboBox.Location = new Point(85, 15);
 		_filePathComboBox.Margin = new Padding(0);
@@ -96,6 +98,33 @@ partial class Form1
 		_filePathComboBox.Sorted = true;
 		_filePathComboBox.TabIndex = 2;
 		_filePathComboBox.TextChanged += this.FilePathComboBox_TextChanged;
+		// 
+		// _filePathComboBox
+		// 
+		_filePathComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+		_filePathComboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+		_filePathComboBox.AutoCompleteSource = AutoCompleteSource.FileSystem;
+		_filePathComboBox.Location = new Point(85, 15);
+		_filePathComboBox.Margin = new Padding(0);
+		_filePathComboBox.Name = "_filePathComboBox";
+		_filePathComboBox.Size = new Size(293, 23);
+		_filePathComboBox.Sorted = true;
+		_filePathComboBox.TabIndex = 2;
+		_filePathComboBox.TextChanged += this.FilePathComboBox_TextChanged;
+		_filePathComboBox.Visible = false;
+		// 
+		// _filePathTextBox
+		// 
+		_filePathTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+		_filePathTextBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+		_filePathTextBox.AutoCompleteSource = AutoCompleteSource.FileSystem;
+		_filePathTextBox.Location = new Point(85, 15);
+		_filePathTextBox.Margin = new Padding(0);
+		_filePathTextBox.Name = "_filePathTextBox";
+		_filePathTextBox.Size = new Size(293, 23);
+		_filePathTextBox.Visible = true;
+		_filePathTextBox.TabIndex = 2;
+		_filePathTextBox.TextChanged += this.FilePathComboBox_TextChanged;
 		// 
 		// _extractButton
 		// 
@@ -214,6 +243,7 @@ partial class Form1
 	private System.Windows.Forms.Panel _filePanel;
 	private System.Windows.Forms.Button _extractButton;
 	private System.Windows.Forms.ComboBox _filePathComboBox;
+	private System.Windows.Forms.TextBox _filePathTextBox;
 	private System.Windows.Forms.PictureBox _iconPictureBox;
 	private System.Windows.Forms.ListBox _imagesListBox;
 	private System.Windows.Forms.Label _fileNameLabel;

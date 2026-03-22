@@ -34,6 +34,11 @@
 			<Platform Solution="*|x64" Project="x64" />
 			<Platform Solution="*|x86" Project="x86" />
 		</Project>
+		<Project Path="../tasler-dotnet/Source/Tasler.Interop.Shell/Tasler.Interop.Shell.csproj" Id="4090fb61-0858-4ae8-a30d-b34464a9505f">
+			<Platform Solution="*|ARM64" Project="arm64" />
+			<Platform Solution="*|x64" Project="x64" />
+			<Platform Solution="*|x86" Project="x86" />
+		</Project>
 		<Project Path="../tasler-dotnet/Source/Tasler.Interop/Tasler.Interop.csproj">
 			<Platform Solution="*|ARM64" Project="ARM64" />
 			<Platform Solution="*|x64" Project="x64" />
@@ -68,8 +73,13 @@
 			<Platform Solution="*|x86" Project="x86" />
 		</Project>
 	</Folder>
-	<Project Path="src.WinForms/IconViewer.csproj">
+	<Project Path="src.WinForms/IconViewer.WinForms.csproj" Id="68483460-32a4-48d6-945c-c707f3582210">
 		<Platform Solution="*|ARM64" Project="ARM64" />
+		<Platform Solution="*|x64" Project="x64" />
+		<Platform Solution="*|x86" Project="x86" />
+	</Project>
+	<Project Path="src/IconViewer.csproj" Id="31f7db0a-65bc-4020-8cd3-c74333fab7a8">
+		<Platform Solution="*|ARM64" Project="arm64" />
 		<Platform Solution="*|x64" Project="x64" />
 		<Platform Solution="*|x86" Project="x86" />
 	</Project>

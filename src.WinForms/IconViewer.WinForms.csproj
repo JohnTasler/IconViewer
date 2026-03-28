@@ -5,7 +5,7 @@
 		<OutputType>WinExe</OutputType>
 		<RootNamespace>IconViewer.WinForms</RootNamespace>
 		<AssemblyName>IconViewer.WinForms</AssemblyName>
-		<TargetFramework>net9.0-windows</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<Deterministic>true</Deterministic>
 		<Platforms>AnyCPU;x64;x86;ARM64</Platforms>
 	</PropertyGroup>

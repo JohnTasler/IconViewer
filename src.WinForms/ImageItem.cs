@@ -1,6 +1,7 @@
 using CommunityToolkit.Diagnostics;
 using Tasler.Interop.Gdi;
 using Tasler.Interop.Resources;
+using Tasler.Interop.Shell;
 
 namespace IconViewer;
 
@@ -20,7 +21,7 @@ public class ImageItem : IDisposable
 		_icon = Icon.FromHandle(_iconHandle.DangerousGetHandle());
 	}
 
-	public ImageItem(SafeGdiIcon iconHandle, Interop.SHIL imageListIndex)
+	public ImageItem(SafeGdiIcon iconHandle, SHIL imageListIndex)
 		: this(iconHandle, true)
 	{
 		this.DisplayText = $"{imageListIndex} {_icon.Width}x{_icon.Height}";

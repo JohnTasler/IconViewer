@@ -2,8 +2,11 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:props="clr-namespace:IconViewer.Properties"
+	xmlns:taz="urn:tasler-dotnet-ui"
 	xmlns:wpf="http://wpfcontrols.com/"
+
 	x:Class="IconViewer.MainView"
+	taz:WindowPersistence.Placement="{Binding MainViewWindowPlacement, Source={x:Static props:Settings.Default}}"
 
 	Width="540" Height="402"
 	MinWidth="540" MinHeight="402"
@@ -27,7 +30,7 @@
 
 			<Label Content="_File name:" Target="_filePathTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-			<wpf:AutoCompleteTextBox
+			<!--<wpf:AutoCompleteTextBox
 				x:Name="_filePathTextBox"
 				Grid.Column="1"
 				Margin="10,0,0,0" Height="25" Padding="0,0,-31,0"
@@ -35,24 +38,24 @@
 				VerticalContentAlignment="Center"
 				BorderThickness="1,1,0,1"
 				Text="{Binding FilePathText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				/>
-			<!--<ComboBox
-				x:Name="_filePathComboBox"
+				/>-->
+			<ComboBox
+				x:Name="_filePathTextBox"
 				Grid.Column="1"
 				Margin="10,0,0,0" Height="25"
 				HorizontalAlignment="Stretch" VerticalAlignment="Center"
 				VerticalContentAlignment="Center"
 				BorderThickness="1,1,0,1"
-				ItemsSource="{Binding FilePathItems}"
+				ItemsSource="{Binding PreviousFiles, Source={x:Static props:Settings.Default}}"
 				IsEditable="True" IsTextSearchEnabled="True"
 				Text="{Binding FilePathText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				/>-->
+				/>
 			<Button x:Name="_browseButton"
 				Grid.Column="2"
-				Margin="-31,0,0,0" Padding="0,0,1,1"
+				Margin="0,0,0,0" Padding="0,0,1,1"
 				Width="31" Height="22"
 				VerticalContentAlignment="Center"
-				BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush,ElementName=_filePathComboBox}"
+				BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush,ElementName=_filePathTextBox}"
 				Content="_..."
 				Command="{Binding BrowseCommand}" />
 			<Button x:Name="_extractButton"
@@ -87,13 +90,20 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<Border Grid.Row="0">
-					<Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Center" VerticalAlignment="Center">
-						<Image x:Name="_iconImage" Width="256" Height="256"
-							Stretch="UniformToFill"
-							/>
+				<Grid Grid.Row="0" DataContext="{Binding SelectedImageItem, Mode=OneWay}">
+					<Image x:Name="_iconImage" Width="{Binding Width}" Height="{Binding Height}"
+						HorizontalAlignment="Center" VerticalAlignment="Center"
+						Stretch="None"
+						Source="{Binding Icon}"
+						/>
+					<Border
+						HorizontalAlignment="Center" VerticalAlignment="Center"
+						Width="{Binding Width}" Height="{Binding Height}"
+						Opacity="{Binding IsChecked, ElementName=_showBorderCheckBox}"
+						BorderBrush="Black" BorderThickness="1,1,1,1"
+						>
 					</Border>
-				</Border>
+				</Grid>
 
 				<Grid Grid.Row="1" Margin="0,10,0,0">
 					<Grid.ColumnDefinitions>
@@ -101,6 +111,7 @@
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
 					<CheckBox
+						x:Name="_showBorderCheckBox"
 						HorizontalAlignment="Left" VerticalAlignment="Center"
 						Content="Show _border"
 						IsChecked="{Binding ShowBorderCheckBox_IsChecked, Source={x:Static props:Settings.Default}}"

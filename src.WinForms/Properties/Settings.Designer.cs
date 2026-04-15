@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IconViewer.Properties {
+namespace IconViewer.WinForms.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "18.4.0.0")]
-    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -37,7 +37,7 @@ namespace IconViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("256x256 32bpp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Jumbo 256x256")]
         public string PreviouslySelectedListItemName {
             get {
                 return ((string)(this["PreviouslySelectedListItemName"]));
@@ -97,9 +97,9 @@ namespace IconViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.ObjectModel.ObservableCollection<System.String> PreviousFiles {
+        public global::System.Collections.Specialized.StringCollection PreviousFiles {
             get {
-                return ((global::System.Collections.ObjectModel.ObservableCollection<System.String>)(this["PreviousFiles"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["PreviousFiles"]));
             }
             set {
                 this["PreviousFiles"] = value;

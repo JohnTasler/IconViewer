@@ -1,10 +1,13 @@
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using IconViewer.Properties;
+using IconViewer.WinForms.Properties;
+using Tasler.Interop.Gdi;
 using Tasler.Interop.Resources;
+using Tasler.Interop.Shell;
+using Tasler.Interop.Shell.Interfaces;
 
-namespace IconViewer;
+namespace IconViewer.WinForms;
 
 public partial class Form1 : Form
 {
@@ -59,18 +62,18 @@ public partial class Form1 : Form
 			}
 			else
 			{
-				Interop.SHFILEINFOW sfi = new Interop.SHFILEINFOW();
-				var a = Interop.SHGetFileInfo(exePath, 0, ref sfi, (uint)Marshal.SizeOf(sfi), Interop.SHGFI.SysIconIndex);
+				SHFILEINFOW sfi = new SHFILEINFOW();
+				var a = ShellApi.NativeMethods.SHGetFileInfo(exePath, 0, ref sfi, (uint)Marshal.SizeOf(sfi), SHGFI.SysIconIndex);
 
 				AddPathToComboBox(exePath);
 
 				ImageItem? selectedImageItem = null;
-				foreach (var imageListIndex in new[] { Interop.SHIL.Small, Interop.SHIL.SysSmall, Interop.SHIL.Large, Interop.SHIL.ExtraLarge, Interop.SHIL.Jumbo })
+				foreach (var imageListIndex in new[] { SHIL.Small, SHIL.SysSmall, SHIL.Large, SHIL.ExtraLarge, SHIL.Jumbo })
 				{
-					var imageList = Interop.SHGetImageList((Interop.SHIL)imageListIndex);
+					var imageList = ShellApi.SHGetImageList((SHIL)imageListIndex);
 					if (imageList is not null)
 					{
-						var hIcon = imageList.GetIcon(sfi.iIcon, 1);
+						var hIcon = imageList.GetIcon(sfi.iIcon, ImageListDrawFlags.Transparent);
 						var item = new ImageItem(hIcon, imageListIndex);
 						items.Add(item);
 

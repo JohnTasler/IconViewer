@@ -1,5 +1,5 @@
 
-namespace IconViewer;
+namespace IconViewer.WinForms;
 
 partial class Form1
 {
@@ -16,7 +16,7 @@ partial class Form1
 	{
 		this.ClearImageListBox();
 
-		if (disposing && (components != null))
+		if (disposing && (components is not null))
 		{
 			components.Dispose();
 		}

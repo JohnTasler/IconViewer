@@ -2,7 +2,10 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Diagnostics;
 using Tasler.Interop.Gdi;
+using Tasler.Interop.Kernel;
 using Tasler.Interop.Resources;
+using Tasler.Interop.Shell;
+using Tasler.Interop.User;
 
 namespace IconViewer;
 
@@ -27,16 +30,26 @@ public class ImageItem : IDisposable
 			new(0, 0, width, height), BitmapSizeOptions.FromWidthAndHeight(width, height));
 	}
 
-	public ImageItem(SafeGdiIcon iconHandle, Interop.SHIL imageListIndex)
+	public ImageItem(SafeGdiIcon iconHandle, SHIL imageListIndex)
 		: this(iconHandle, true)
 	{
 		this.DisplayText = $"{imageListIndex} {_icon.Width}x{_icon.Height}";
 	}
 
-	public ImageItem(IconDirectoryItem directoryItem)
+	public ImageItem(IIconDirectoryItem directoryItem)
 		: this(directoryItem.CreateIcon(), true)
 	{
-		this.DisplayText = directoryItem.ResDirEntry.ToString();
+		var displayText = directoryItem.ToString();
+		Guard.IsNotNull(displayText);
+		this.DisplayText = displayText;
+	}
+
+	public ImageItem(SafeInstanceHandle hInstance, IIconDirectoryItem directoryItem, ResourceValue name)
+		: this(directoryItem.GetIcon(hInstance), true)
+	{
+		var displayText = $"{name.ToString()}\t{directoryItem.ToString()}";
+		Guard.IsNotNull(displayText);
+		this.DisplayText = displayText;
 	}
 
 	public BitmapSource Icon => _icon;

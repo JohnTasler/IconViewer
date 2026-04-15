@@ -1,7 +1,7 @@
-using System;
-using System.Windows.Forms;
+using IconViewer.WinForms.Properties;
+using Tasler.Configuration;
 
-namespace IconViewer;
+namespace IconViewer.WinForms;
 
 static class Program
 {
@@ -13,6 +13,8 @@ static class Program
 	{
 		Application.EnableVisualStyles();
 		Application.SetCompatibleTextRenderingDefault(false);
+		Settings.Default.SetAutoSaveDeferral(TimeSpan.FromSeconds(2));
 		Application.Run(new Form1());
+		Settings.Default.ExpireAndClearAutoSaveDeferral();
 	}
 }

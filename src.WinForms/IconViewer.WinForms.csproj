@@ -23,6 +23,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\tasler-dotnet\Source\Tasler.Interop\Tasler.Interop.csproj" />
+	  <ProjectReference Include="..\..\tasler-dotnet\Source\Tasler.Interop.Shell\Tasler.Interop.Shell.csproj" />
+	  <ProjectReference Include="..\..\tasler-dotnet\Source\Tasler.UI.Wpf\Tasler.UI.Wpf.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,6 +42,11 @@
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
+		<Compile Update="Properties\Settings.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+		</Compile>
 		<Compile Update="Properties\Settings.Designer.cs">
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Settings.settings</DependentUpon>
